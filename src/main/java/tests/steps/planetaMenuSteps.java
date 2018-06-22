@@ -75,7 +75,9 @@ public class planetaMenuSteps {
     public static SelenideElement getMenuItemPane(SelenideElement menuPane, SelenideElement menuItem){
         String itemDataTarget = menuItem.getAttribute("data-target");
         SelenideElement menuItemPane = menuPane.$("[data-id=" + itemDataTarget + "]");
+
         menuItemPane.waitUntil(attribute("class", "PanesItem PanesItem--active"), timeOut);
+
         return menuItemPane;
     }
 
