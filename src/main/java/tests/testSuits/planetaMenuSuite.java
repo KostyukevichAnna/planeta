@@ -68,12 +68,9 @@ public class planetaMenuSuite {
     public void closeMenuPlanetaMenuTest() {
         ElementsCollection elements = getElementsMenu();
 
-        SelenideElement element;
         SelenideElement menuPane;
         SelenideElement closeButton;
-        for (int i = 0; i < elements.size(); i++){
-            element = elements.get(i);
-
+        for (SelenideElement element : elements) {
             clickMenuItem(element);
             menuPane = waitVisibleMenuPane();
             closeButton = getButtonCloseMenu(menuPane);

@@ -7,7 +7,8 @@ import org.testng.Assert;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.WebDriverRunner.url;
 
 /**
@@ -20,7 +21,7 @@ public class planetaMenuPagesSteps {
     /**
      * Определяет входит ли пункт меню в список страниц, которые открываются в новой вкладке.
      * @param itemName - название пункта меню.
-     * @return
+     * @return - пункт меню входит в список или не в ходит.
      */
     private static boolean isItemInNewWindow(String itemName){
         for (String item : itemInNewWindowList)
@@ -33,7 +34,7 @@ public class planetaMenuPagesSteps {
     /**
      * Определяет входит ли пункт меню в список страниц, для которых происходит редирект.
      * @param itemName - название пункта меню.
-     * @return
+     * @return - пункт меню входит в список или не в ходит.
      */
     private static boolean isItemRedirect(String itemName){
         for (String item : itemRedirectList)
@@ -65,7 +66,7 @@ public class planetaMenuPagesSteps {
     }
 
     /**
-     * Проверяет открытие страницы при клике на пункт меню в плашке.
+     * Проверяет открытие страницы при клике.
      * @param currentUrl - url текущей вкладки браузера.
      * @param link - url, по которому производился переход.
      */
@@ -76,7 +77,7 @@ public class planetaMenuPagesSteps {
     /**
      * Возвращает список пунктов меню, содержащий продукты.
      * @param pane - плашка меню.
-     * @return
+     * @return - список пунктов меню, содержащий продукты.
      */
     public static ElementsCollection getProductMenuItemsCollection(SelenideElement pane){
         return pane.$("div.Grid-cell").$$("a");
@@ -105,7 +106,7 @@ public class planetaMenuPagesSteps {
 
     /**
      * Проверяет соответствие текста ожидаемому результату.
-     * @param textBlock
+     * @param textBlock - блок с текстом.
      */
     public static void checkTextBlockProductPage(SelenideElement textBlock){
         String expectedText = "Обратите внимание на раздел Акции. В нем содержится актуальная информация о специальных предложениях, скидках на оборудование и возможностях получения бонусных баллов — чатлов, с помощью которых вы можете компенсировать затраты по тарифам «Планеты» на интернет и другие услуги.";
@@ -147,5 +148,92 @@ public class planetaMenuPagesSteps {
             Assert.assertTrue(linkExpected != null, "Не указана ссылка для слова " + wordActual + ".");
             Assert.assertEquals(linkActual, linkExpected);
         }
+    }
+
+    /**
+     * Возвращает элемент пункта меню "Сравнить продукты".
+     * @param pane - плашка меню.
+     * @return - элемент пункта меню "Сравнить продукты".
+     */
+    public static SelenideElement getCompareProductMenuItem(SelenideElement pane){
+        return pane.$$("a").find(attribute("innerText", " Сравнить продукты"));
+    }
+
+    /**
+     * Возвращает список продуктов страницы "Сравнить продукты".
+     * @return - список продуктов страницы "Сравнить продукты".
+     */
+    public static ElementsCollection getProductCollection(){
+        return  $$("tr").exclude(attribute("class", "choice__header"));
+    }
+
+    /**
+     * Кликает на ссылку с названием продукта.
+     * @param productLink - элемент, содержащий ссылку на продукт.
+     */
+    public static void clickProductLink(SelenideElement productLink){
+        productLink.click();
+    }
+
+    /**
+     * Выполняет движение мышью по строке продукта.
+     * @param product - строка продукта.
+     */
+    public static void mouseHoverProduct(SelenideElement product){
+        product.hover();
+    }
+
+    /**
+     * Возвращает элемент, содержащий кнопку "Выбрать".
+     * @param product - строка продукта в таблице на странице "Сравнить продукты".
+     * @return - элемент, содержащий кнопку "Выбрать".
+     */
+    public static SelenideElement getElementChooseButton(SelenideElement product){
+        SelenideElement button = product.$(".choice__button-wrapper a");
+
+        button.shouldBe(visible);
+
+        return button;
+    }
+
+    /**
+     * Возвращает гиперссылку на страницу продукта.
+     * @param element - элемент, содержащий гиперссылку на продукт.
+     * @return - гиперссылку на страницу продукта.
+     */
+    public static String getProductUrl(SelenideElement element){
+        return element.attr("href");
+    }
+
+    /**
+     * Проверяет отображение кнопки "Выбрать" на странице "Сравнить продукты".
+     * @param button - элемент кнопки.
+     */
+    public static void checkExistChooseButton(SelenideElement button){
+         Assert.assertTrue(button.isDisplayed(), "Не отображается кнопка \"Выбрать\"");
+    }
+
+    /**
+     * Проверяет название кнопки на соответствие ожидаемому результату.
+     * @param button - элемент кнопки.
+     */
+    public static void checkNameChooseButton(SelenideElement button){
+        Assert.assertEquals(button.innerText(), "Выбрать", "Отображается неверное название кнопки.");
+    }
+
+    /**
+     * Проверяет значение атрибута class кнопки "Выбрать".
+     * @param button - элемент кнопки.
+     */
+    public static void checkClassChooseButton(SelenideElement button){
+        Assert.assertEquals(button.attr("class"), "button-violet choice__button", "Кнопка \"Выбрать\" имеет неверное значение класса.");
+    }
+
+    /**
+     * Проверяет открытие страницы при клике на гиперссылку с названием продукта на странице "Сравнить продукты".
+     * @param productUrl - url, по которому происходиn открытие страницы.
+     */
+    public static void checkOpenProductLink(String productUrl){
+        checkOpenNewPage(url(), productUrl);
     }
 }

@@ -51,7 +51,6 @@ public class planetaMenuPagesSuite {
 
                 back();
                 clickMenuItem(element);
-
                 waitVisibleMenuPane();
             }
         }
@@ -71,10 +70,7 @@ public class planetaMenuPagesSuite {
         SelenideElement menuItemPane = getMenuItemPane(menuPane, element);
         ElementsCollection menuItemsCollection = getProductMenuItemsCollection(menuItemPane);
 
-        SelenideElement pageLink;
-        for (int i = 0; i < menuItemsCollection.size(); i++){
-            pageLink = menuItemsCollection.get(i);
-
+         for (SelenideElement pageLink : menuItemsCollection){
             clickMenuItem(pageLink);
             SelenideElement textBlock = checkExistTextBlockProductPage();
             SelenideElement text = getTextFromTextBlock(textBlock);
@@ -84,6 +80,50 @@ public class planetaMenuPagesSuite {
             back();
             clickMenuItem(element);
             waitVisibleMenuPane();
+        }
+    }
+
+    /**
+     * Проверяет страницу пункта меню "Сравнить продукты".
+     */
+    @Test
+    public static void compareProductPageTest(){
+        ElementsCollection elements = getElementsMenu();
+
+        SelenideElement menuPane;
+        SelenideElement menuItemPane;
+        SelenideElement compareProductMenuItem;
+        SelenideElement chooseButton;
+        String productUrl;
+
+        for (SelenideElement element : elements){
+            clickMenuItem(element);
+
+            menuPane = waitVisibleMenuPane();
+            menuItemPane = getMenuItemPane(menuPane, element);
+            compareProductMenuItem = getCompareProductMenuItem(menuItemPane);
+
+            clickMenuItem(compareProductMenuItem);
+
+            ElementsCollection productsCollection = getProductCollection();
+
+            for (SelenideElement product : productsCollection) {
+                mouseHoverProduct(product);
+
+                chooseButton = getElementChooseButton(product);
+
+                checkExistChooseButton(chooseButton);
+                checkNameChooseButton(chooseButton);
+                checkClassChooseButton(chooseButton);
+
+                productUrl = getProductUrl(chooseButton);
+
+                clickProductLink(chooseButton);
+
+                checkOpenProductLink(productUrl);
+
+                back();
+            }
         }
     }
 }
