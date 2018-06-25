@@ -5,6 +5,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import static com.codeborne.selenide.Selenide.open;
+import static tests.steps.planetaConnectionSteps.getTestData;
 import static tests.steps.planetaMenuSteps.*;
 
 /**
@@ -12,12 +13,34 @@ import static tests.steps.planetaMenuSteps.*;
  */
 public class planetaMenuSuite {
     /**
-     * Запуск веб-драйвера, открытие сайта.
+     * Запуск веб-драйвера Google Chrome, открытие сайта.
      */
     @BeforeClass
-    public void start() {
+    public void startChrome() {
         System.setProperty("selenide.browser", "chrome");
         open("https://planeta.tc/ekb");
+    }
+
+    /**
+     * Запуск веб-драйвера Firefox, открытие сайта.
+     */
+//    @BeforeClass
+    public void startFirefox() {
+        System.setProperty("selenide.browser", "firefox");
+        open("https://planeta.tc/ekb");
+
+        getTestData();
+    }
+
+    /**
+     * Запуск веб-драйвера Opera, открытие сайта.
+     */
+//    @BeforeClass
+    public void startOpera() {
+        System.setProperty("selenide.browser", "opera");
+        open("https://planeta.tc/ekb");
+
+        getTestData();
     }
 
     /**

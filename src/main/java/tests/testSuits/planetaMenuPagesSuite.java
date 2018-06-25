@@ -2,11 +2,12 @@ package tests.testSuits;
 
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.back;
+import static com.codeborne.selenide.Selenide.open;
+import static tests.steps.planetaConnectionSteps.getTestData;
 import static tests.steps.planetaMenuPagesSteps.*;
 import static tests.steps.planetaMenuSteps.*;
 
@@ -15,12 +16,34 @@ import static tests.steps.planetaMenuSteps.*;
  */
 public class planetaMenuPagesSuite {
     /**
-     * Запуск веб-драйвера, открытие сайта.
+     * Запуск веб-драйвера Chrome, открытие сайта.
      */
     @BeforeClass
-    public void start() {
+    public void startChrome() {
         System.setProperty("selenide.browser", "chrome");
         open("https://planeta.tc/ekb");
+    }
+
+    /**
+     * Запуск веб-драйвера Firefox, открытие сайта.
+     */
+//    @BeforeClass
+    public void startFirefox() {
+        System.setProperty("selenide.browser", "firefox");
+        open("https://planeta.tc/ekb");
+
+        getTestData();
+    }
+
+    /**
+     * Запуск веб-драйвера Opera, открытие сайта.
+     */
+//    @BeforeClass
+    public void startOpera() {
+        System.setProperty("selenide.browser", "opera");
+        open("https://planeta.tc/ekb");
+
+        getTestData();
     }
 
     /**
@@ -34,6 +57,7 @@ public class planetaMenuPagesSuite {
         SelenideElement menuPane;
         SelenideElement menuItemPane;
         ElementsCollection menuItemsCollection;
+//        for (SelenideElement element : elements)
         for (int i = 0; i < 1/*elements.size()*/; i++){
             element = elements.get(i);
             clickMenuItem(element);
@@ -43,6 +67,7 @@ public class planetaMenuPagesSuite {
             menuItemsCollection = getMenuItemsCollection(menuItemPane);
 
             SelenideElement item;
+//            for (SelenideElement item : menuItemsCollection)
             for (int el = 0; el < 10/*menuItemsCollection.size()*/; el++){
                 item = menuItemsCollection.get(el);
 
